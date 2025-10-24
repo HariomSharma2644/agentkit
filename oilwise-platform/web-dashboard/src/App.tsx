@@ -58,6 +58,7 @@ function App() {
               <Route path="/policy-dashboard" element={<PolicyDashboard />} />
               <Route path="/certifications" element={<CertificationHub />} />
               <Route path="/education" element={<EducationHub />} />
+              <Route path="*" element={<LandingPage />} />
             </Routes>
           </Box>
         </Box>
