@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "framework": "react",
+  "framework": "create-react-app",
   "buildCommand": "cd web-dashboard && npm install && npm run build",
   "outputDirectory": "web-dashboard/build",
   "installCommand": "npm install",
