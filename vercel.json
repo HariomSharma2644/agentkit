@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "buildCommand": "cd oilwise-platform && npm install && npm run build",
+  "outputDirectory": "oilwise-platform/web-dashboard/build",
+  "framework": "react",
+  "installCommand": "npm install",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "builds": [
+    {
+      "src": "oilwise-platform/backend/package.json",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "runtime": "nodejs18.x"
+      }
+    },
+    {
+      "src": "oilwise-platform/web-dashboard/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "oilwise-platform/backend/index.ts",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "oilwise-platform/web-dashboard/build/$1"
+    }
+  ]
+}
+
