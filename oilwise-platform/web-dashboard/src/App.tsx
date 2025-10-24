@@ -1,23 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './store';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-
-// Layouts
-import MainLayout from './layouts/MainLayout';
-
-// Pages
-import LoginPage from './pages/auth/LoginPage';
-import DashboardPage from './pages/dashboard/DashboardPage';
-import ConsumptionPage from './pages/consumption/ConsumptionPage';
-import HealthPage from './pages/health/HealthPage';
-import RecipesPage from './pages/recipes/RecipesPage';
-import AnalyticsPage from './pages/analytics/AnalyticsPage';
-import PartnersPage from './pages/partners/PartnersPage';
-import CertificationsPage from './pages/certifications/CertificationsPage';
-import UsersPage from './pages/users/UsersPage';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const theme = createTheme({
   palette: {
@@ -38,29 +25,41 @@ const theme = createTheme({
 
 function App() {
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<DashboardPage />} />
-              <Route path="/consumption" element={<ConsumptionPage />} />
-              <Route path="/health" element={<HealthPage />} />
-              <Route path="/recipes" element={<RecipesPage />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/partners" element={<PartnersPage />} />
-              <Route path="/certifications" element={<CertificationsPage />} />
-              <Route path="/users" element={<UsersPage />} />
-            </Route>
-
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Router>
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '100vh',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h1" component="h1" gutterBottom sx={{ color: '#2ecc71' }}>
+            🌾 OilWise Platform
+          </Typography>
+          <Typography variant="h5" component="h2" gutterBottom sx={{ color: '#555', marginBottom: 3 }}>
+            Digital Solution for Reducing Edible Oil Consumption in India
+          </Typography>
+          <Typography variant="body1" sx={{ marginBottom: 3, maxWidth: 600 }}>
+            Welcome to OilWise Platform. This is a digital solution designed to help reduce edible oil consumption
+            through real-time price alerts, profitability simulations, crop economics dashboards, weather advisories,
+            market linkages, government scheme access, FPO linkages, and gamification features.
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button variant="contained" color="primary" size="large">
+              Get Started
+            </Button>
+            <Button variant="outlined" color="primary" size="large">
+              Learn More
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }
 
