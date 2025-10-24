@@ -1,9 +1,9 @@
 {
   "version": 2,
   "framework": "create-react-app",
-  "buildCommand": "cd web-dashboard && npm install && npm run build",
+  "buildCommand": "cd web-dashboard && npm ci && npm run build",
   "outputDirectory": "web-dashboard/build",
-  "installCommand": "npm install",
+  "installCommand": "cd web-dashboard && npm ci",
   "env": {
     "NODE_ENV": "production",
     "REACT_APP_API_URL": "https://oilwise.vercel.app/api",
