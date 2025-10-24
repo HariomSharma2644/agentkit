@@ -6,13 +6,11 @@ import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
-import { useState } from 'react';
 
 interface NavigationProps {
   drawerOpen: boolean;
@@ -89,10 +87,10 @@ export default function Navigation({ drawerOpen, setDrawerOpen }: NavigationProp
           <List>
             {menuItems.map((item) => (
               <ListItem
-                button
                 key={item.path}
                 onClick={() => handleNavigation(item.path)}
                 selected={location.pathname === item.path}
+                sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f0f0f0' } }}
               >
                 <ListItemText primary={item.label} />
               </ListItem>
