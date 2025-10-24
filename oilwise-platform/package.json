@@ -1,0 +1,28 @@
+{
+  "name": "oilwise-platform",
+  "version": "1.0.0",
+  "description": "OilWise Platform - Digital solution for reducing edible oil consumption in India",
+  "private": true,
+  "scripts": {
+    "build": "cd web-dashboard && npm install && npm run build",
+    "dev": "cd backend && npm run dev",
+    "start": "cd backend && npm start",
+    "test": "cd backend && npm test",
+    "lint": "cd backend && npm run lint",
+    "migrate": "cd backend && npm run migrate"
+  },
+  "keywords": [
+    "oilwise",
+    "health",
+    "consumption",
+    "tracking",
+    "india"
+  ],
+  "author": "OilWise Team",
+  "license": "MIT",
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  }
+}
+
