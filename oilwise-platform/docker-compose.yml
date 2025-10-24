@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14-alpine
+    container_name: oilwise-postgres
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-oilwise}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - oilwise-network
+
+  # MongoDB
+  mongodb:
+    image: mongo:5.0
+    container_name: oilwise-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-password}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - oilwise-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: oilwise-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - oilwise-network
+
+  # MQTT Broker
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: oilwise-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_logs:/mosquitto/log
+    networks:
+      - oilwise-network
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: oilwise-backend
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      DB_NAME: ${DB_NAME:-oilwise}
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - redis
+      - mongodb
+    networks:
+      - oilwise-network
+
+  # AI Engine
+  ai-engine:
+    build:
+      context: ./ai-engine
+      dockerfile: Dockerfile
+    container_name: oilwise-ai
+    environment:
+      FLASK_ENV: development
+      PORT: 5000
+      BACKEND_URL: http://backend:3000
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+    networks:
+      - oilwise-network
+
+  # IoT Integration
+  iot-integration:
+    build:
+      context: ./iot-integration
+      dockerfile: Dockerfile
+    container_name: oilwise-iot
+    environment:
+      NODE_ENV: development
+      MQTT_BROKER: mqtt://mosquitto:1883
+      BACKEND_URL: http://backend:3000
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mosquitto
+      - backend
+    networks:
+      - oilwise-network
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  redis_data:
+  mosquitto_data:
+  mosquitto_logs:
+
+networks:
+  oilwise-network:
+    driver: bridge
+
